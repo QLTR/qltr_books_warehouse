@@ -4,12 +4,8 @@ provider:
   name: google
   stage: dev
   runtime: nodejs10
-  region: europe-west
-  project: Qulture
-  # The GCF credentials can be a little tricky to set up. Luckily we've documented this for you here:
-  # https://serverless.com/framework/docs/providers/google/guide/credentials/
-  #
-  # the path to the credentials file needs to be absolute
+  region: europe-west1
+  project: q****0 # anonymising project id
   credentials: ~/.gcloud/qltr_keyfile.json
 
 plugins:
@@ -24,24 +20,11 @@ package:
     - .git/**
 
 functions:
-  first:
-    handler: http
+  createBook:
     events:
-      - http: path
-  # NOTE: the following uses an "event" event (pubSub event in this case).
-  # Please create the corresponding resources in the Google Cloud
-  # before deploying this service through Serverless
-  #second:
-  #  handler: event
-  #  events:
-  #    - event:
-  #        eventType: providers/cloud.pubsub/eventTypes/topic.publish
-  #        resource: projects/*/topics/my-topic
-# you can define resources, templates etc. the same way you would in a
-# Google Cloud deployment configuration
-#resources:
-#  resources:
-#    - type: storage.v1.bucket
-#      name: my-serverless-service-bucket
-#  imports:
-#    - path: my_template.jinja
+      - http: book/create
+    handler: createBook
+  httpget:
+    events:
+      - http: httpget
+    handler: httpget
